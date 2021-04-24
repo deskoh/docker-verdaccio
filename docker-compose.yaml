@@ -1,0 +1,22 @@
+version: '3.1'
+
+services:
+  verdaccio:
+    build: ./verdaccio
+    image: verdaccio:offline
+    container_name: "verdaccio"
+    # Use root to avoid permissions in volume mounts
+    user: "root"
+    networks:
+      - node-network
+    environment:
+      - VERDACCIO_PORT=4873
+    ports:
+      - "4873:4873"
+    # See https://verdaccio.org/docs/en/docker.html#selinux
+    volumes:
+      - "./storage:/verdaccio/storage"
+      - "./config:/verdaccio/conf"
+networks:
+  node-network:
+    driver: bridge
